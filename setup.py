@@ -1,9 +1,9 @@
 from setuptools import setup, find_packages
 import os
 
-version = '2.1dev'
+version = '0.1'
 
-setup(name='collective.recipe.modwsgi',
+setup(name='mk.recipe.modwsgi',
       version=version,
       description='WSGI from buildout',
       long_description=open('README.rst').read() + '\n' +
@@ -27,7 +27,7 @@ setup(name='collective.recipe.modwsgi',
       url='https://github.com/wichert/collective.recipe.modwsgi',
       license='ZPL',
       packages=find_packages(exclude=['ez_setup']),
-      namespace_packages=['collective', 'collective.recipe'],
+      namespace_packages=['mk', 'mk.recipe'],
       include_package_data=True,
       zip_safe=True,
       install_requires=[
@@ -36,6 +36,6 @@ setup(name='collective.recipe.modwsgi',
       ],
       entry_points='''
       [zc.buildout]
-      default = collective.recipe.modwsgi:Recipe
+      default = mk.recipe.modwsgi:Recipe
       ''',
       )
