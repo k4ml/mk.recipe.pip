@@ -14,6 +14,8 @@ for path in reversed(syspaths):
     if path not in sys.path:
         sys.path[0:0]=[path]
 
+%(initialization)s
+
 from %(wsgi_module)s import application
 """
 
@@ -50,6 +52,7 @@ class Recipe(object):
         output = WRAPPER_TEMPLATE % dict(
             wsgi_module=self.options["wsgi-module"],
             syspath=",\n    ".join((repr(p) for p in path)),
+            initialization=self.options.get('initialization', ''),
             )
 
         target = self.options.get("target")
