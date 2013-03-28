@@ -26,6 +26,7 @@ class Recipe(object):
         self.name = name
         self.options = options
         self.logger = logging.getLogger(self.name)
+        self.make_target_dir = False
 
         if "wsgi-module" not in options:
             self.logger.error(
@@ -33,12 +34,15 @@ class Recipe(object):
                     "your wsgi application")
             raise zc.buildout.UserError("No wsgi module given")
 
+        if self.options.get("makedir", "false") == "true":
+            self.make_target_dir = True
+
         if "target" in options:
-            location = os.path.dirname(options["target"])
-            if not os.path.isdir(location):
+            self.location = os.path.dirname(options["target"])
+            if not os.path.isdir(self.location) and not self.make_target_dir:
                 self.logger.error(
                     "The 'target' option refers to a directory that is not "
-                    "valid: %s" % location)
+                    "valid: %s and makedir option not set or false" % self.location)
                 raise zc.buildout.UserError("Invalid directory for target")
 
     def install(self):
@@ -65,6 +69,9 @@ class Recipe(object):
                 self.options.created(location)
             target = os.path.join(location, "wsgi")
         else:
+            outputdir, filename = os.path.split(os.path.realpath(target))
+            if not os.path.exists(outputdir) and self.make_target_dir:
+                os.makedirs(outputdir)
             self.options.created(target)
 
         f = open(target, "wt")
