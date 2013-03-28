@@ -17,6 +17,8 @@ for path in reversed(syspaths):
 %(initialization)s
 
 from %(wsgi_module)s import application
+
+%(finalization)s
 """
 
 
@@ -57,6 +59,7 @@ class Recipe(object):
             wsgi_module=self.options["wsgi-module"],
             syspath=",\n    ".join((repr(p) for p in path)),
             initialization=self.options.get('initialization', ''),
+            finalization=self.options.get('finalization', ''),
             )
 
         target = self.options.get("target")
