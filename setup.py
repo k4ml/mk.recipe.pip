@@ -3,9 +3,9 @@ import os
 
 version = '0.1'
 
-setup(name='mk.recipe.modwsgi',
+setup(name='mk.recipe.pip',
       version=version,
-      description='WSGI from buildout',
+      description='Use pip from buildout',
       long_description=open('README.rst').read() + '\n' +
                        open(os.path.join('docs', 'HISTORY.txt')).read(),
       classifiers=[
@@ -24,7 +24,7 @@ setup(name='mk.recipe.modwsgi',
       keywords='wsgi buildout',
       author='Kamal Mustafa',
       author_email='kamal.mustafa@gmail.com',
-      url='https://github.com/k4ml/mk.recipe.modwsgi',
+      url='https://github.com/k4ml/mk.recipe.pip',
       license='ZPL',
       packages=find_packages(exclude=['ez_setup']),
       namespace_packages=['mk', 'mk.recipe'],
@@ -36,6 +36,6 @@ setup(name='mk.recipe.modwsgi',
       ],
       entry_points='''
       [zc.buildout]
-      default = mk.recipe.modwsgi:Recipe
+      default = mk.recipe.pip:Recipe
       ''',
       )
