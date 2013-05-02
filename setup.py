@@ -6,8 +6,7 @@ version = '0.1'
 setup(name='mk.recipe.pip',
       version=version,
       description='Use pip from buildout',
-      long_description=open('README.rst').read() + '\n' +
-                       open(os.path.join('docs', 'HISTORY.txt')).read(),
+      long_description=open('README.rst').read(),
       classifiers=[
         'Development Status :: 3 - Alpha',
         'Framework :: Buildout :: Recipe',
