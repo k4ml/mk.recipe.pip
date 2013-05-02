@@ -36,7 +36,9 @@ class Recipe(object):
         arguments += ['--install-option', '--install-purelib=%s' % eggs_dir]
         arguments += ['-r', 'parts/%s/requirements.txt' % self.name]
         env = {'PYTHONPATH': eggs_dir, 'PATH': os.environ['PATH']}
-        subprocess.check_call(arguments, env=env)
+
+        if self.buildout['buildout']['offline'] != 'true':
+            subprocess.check_call(arguments, env=env)
 
         disable_pth = self.options.get('disable-pth', 'false')
         if disable_pth in ('true', '1'):
