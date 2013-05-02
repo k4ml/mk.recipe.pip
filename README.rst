@@ -1,68 +1,36 @@
 Introduction
 ============
 
-''mk.recipe.modwsgi'' is a `zc.buildout`_ recipe which creates
-entry point for mod_wsgi_. It's based on ''collective.recipe.modwsgi''
-but I decided to create it after failed to find recipe that generate
-plain `mod_wsgi`_ script instead of one that use Paste.
+''mk.recipe.pip'' is a `zc.buildout`_ recipe which allow
+you to piggyback on pip to install certain packages that
+not possible to install using `zc.recipe.egg`_. It does not
+replace `zc.recipe.egg`_ (not yet) but should be used in conjuction
+with that recipe. It's based on ''collective.recipe.modwsgi'.'
 
-It is very simple to use. This is a minimal ''buildout.cfg'' file
-which creates a WSGI script mod_python can use::
+It is very simple to use. This is a minimal ''buildout.cfg'' file::
 
     [buildout]
-    parts = mywsgiapp
+    parts = pip base
 
-    [mywsgiapp]
-    recipe = mk.recipe.modwsgi
-    eggs = mywsgiapp
-    wsgi-module = mywsgiapp.wsgi
+    [pip]
+    recipe = mk.recipe.pip
+    requirements =
+        svn+http://django-grappelli.googlecode.com/svn/trunk
+    disable-pth = true
 
-This will create a small python script in parts/mywsgiapp called
-''wsgi'' which mod_wsgi can load. You can also use the optional
-''extra-paths'' option to specify extra paths that are added to
-the python system path. The script will import `application` attribute
-from the `wsgi-module` specified.
+    [base]
+    recipe = zc.recipe.egg
+    interpreter = python
+    eggs =
+        grappelli
+        Django==1.5.1
 
-The apache configuration for this buildout looks like this::
-
-    WSGIScriptAlias /mysite /home/me/buildout/parts/mywsgiapp/wsgi
-
-    <Directory /home/me/buildout>
-        Order deny,allow
-        Allow from all
-    </Directory>
-
-If the python script must be accessed from somewhere else than the buildout
-parts folder, you can use the optional ''target'' option to tell the recipe
-where the script should be created.
-
-For instance, the configuration for the mywsgiapp part could look like this::
-
-    [mywsgiapp]
-    recipe = collective.recipe.modwsgi
-    eggs = mywsgiapp
-    target = /var/www/myapp.wsgi
-    wsgi-module = mywsgiapp.wsgi
-
-The recipe would then create the script at /var/www/myapp.wsgi.
-
-Note that the directory containing the target script must already exist on
-the filesystem prior to running the recipe and be writeable.
-
-The apache configuration for this buildout would then look like this::
-
-    WSGIScriptAlias /mysite /var/www/myapp.wsgi
-
-    <Directory /var/www>
-        Order deny,allow
-        Allow from all
-    </Directory>
-
-This recipe does not fully install packages, which means that console scripts
-will not be created. If you need console scripts you can add a second
-buildout part which uses `z3c.recipe.scripts`_ to do a full install.
+Above, ``grappelli`` will be installed into ``eggs`` directory so that
+`zc.recipe.egg`_ can pick it up. This especially usefull to install private
+packages that only available maybe through svn or other version control system.
 
 .. _zc.buildout: http://pypi.python.org/pypi/zc.buildout
+.. _zc.recipe.egg: http://pypi.python.org/pypi/zc.recipe.egg
 .. _paste.deploy: http://pythonpaste.org/deploy/
 .. _mod_wsgi: http://code.google.com/p/modwsgi/
 .. _z3c.recipe.scripts: http://pypi.python.org/pypi/z3c.recipe.scripts
