@@ -40,9 +40,9 @@ class Recipe(object):
 
         disable_pth = self.options.get('disable-pth', 'false')
         if disable_pth in ('true', '1'):
-            os.remove(os.path.join(eggs_dir, 'site.py'))
-            os.remove(os.path.join(eggs_dir, 'site.pyc'))
-            os.remove(os.path.join(eggs_dir, 'easy-install.pth'))
+            for filename in os.listdir(eggs_dir):
+                if filename in ('site.py', 'site.pyc', 'easy-install.pth'):
+                    os.remove(os.path.join(eggs_dir, filename))
 
         return self.options.created()
 
