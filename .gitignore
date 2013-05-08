@@ -3,3 +3,7 @@
 /collective.recipe.modwsgi.egg-info
 /build
 /dist
+*.egg-info
+*.installed.cfg
+eggs/*
+bin/*
