@@ -1,7 +1,7 @@
 from setuptools import setup, find_packages
 import os
 
-version = 'dev'
+version = '0.2'
 
 setup(name='mk.recipe.pip',
       version=version,
