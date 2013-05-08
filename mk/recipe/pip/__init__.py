@@ -19,6 +19,7 @@ class Recipe(object):
 
     def install(self):
         reqs = self.options['requirements'].split()
+        eggs = self.options.get('eggs', '').split()
         cwd = self.buildout["buildout"]["directory"]
         eggs_dir = self.buildout["buildout"]["eggs-directory"]
         location = os.path.join(
@@ -31,7 +32,12 @@ class Recipe(object):
         filename = os.path.join(location, 'requirements.txt')
         req_file = open(filename, 'w')
         req_file.write("\n".join(reqs))
+        if len(eggs) > 0:
+            req_file.write("\n")
+            req_file.write("\n".join(eggs))
+
         req_file.flush()
+
         arguments = [self.pip_exe, 'install', '--egg',]
         arguments += ['--install-option', '--install-purelib=%s' % eggs_dir]
         arguments += ['-r', 'parts/%s/requirements.txt' % self.name]
